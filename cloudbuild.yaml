@@ -1,0 +1,10 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/valiant-healer-455101-d7/bhise-repo/bhise-flask-app:latest', '.']
+  # Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/valiant-healer-455101-d7/bhise-repo/bhise-flask-app:latest']
+  # Reset the Compute Engine instance to pull the new image
+  - name: 'gcr.io/google.com/cloudsdktool/gcloud'
+    args: ['compute', 'instances', 'reset', 'bhise-flask-instance', '--zone', 'us-central1-a', '--project', 'valiant-healer-455101-d7']
